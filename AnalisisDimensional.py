@@ -1,4 +1,6 @@
 # Dimentional analysis
+
+# class definition and main functions
 class unit:
     # constructor:
     # __init__: str str str str str str str -> Unit
@@ -87,6 +89,16 @@ class unit:
         masaNew = str(masa1+masa2)
         newUnit = Unit("m^"+largoNew,"s^"+tiempoNew,"mole^"+sustanciaNew,"A^"+corrienteNew,"K^"+temperaturaNew,"cd^"+luminosidadNew,"kg^"+masaNew)
         return newUnit
-A = 1 + 4
-    # funcion que permita ajustar magnitud: kg a gr etc XD
-    # funcion q convierta a string, simplifique unidades conocidas
+
+# known units
+Meter = Unit("m^1","s^0","mole^0","A^0","K^0","cd^0","kg^0")
+Second = Unit("m^0","s^1","mole^0","A^0","K^0","cd^0","kg^0")
+Mole = Unit("m^0","s^0","mole^1","A^0","K^0","cd^0","kg^0")
+Amper = Unit("m^0","s^0","mole^0","A^1","K^0","cd^0","kg^0")
+Kelvin = Unit("m^0","s^0","mole^0","A^0","K^1","cd^0","kg^0")
+Candela = Unit("m^0","s^0","mole^0","A^0","K^0","cd^1","kg^0")
+Kilogram = Unit("m^0","s^0","mole^0","A^0","K^0","cd^0","kg^1")
+
+# To-do list:
+# funcion que permita ajustar magnitud: kg a gr etc
+# funcion q convierta a string, simplifique unidades conocidas
