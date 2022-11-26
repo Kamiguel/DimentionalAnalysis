@@ -87,6 +87,6 @@ class unit:
         masaNew = str(masa1+masa2)
         newUnit = Unit("m^"+largoNew,"s^"+tiempoNew,"mole^"+sustanciaNew,"A^"+corrienteNew,"K^"+temperaturaNew,"cd^"+luminosidadNew,"kg^"+masaNew)
         return newUnit
-
+A = 1 + 4
     # funcion que permita ajustar magnitud: kg a gr etc XD
     # funcion q convierta a string, simplifique unidades conocidas
