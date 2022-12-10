@@ -3,9 +3,9 @@
 # class definition and main functions
 class unit:
     # constructor:
-    # __init__: str str str str str str str -> Unit
+    # __init__: str str str str str str str num -> Unit
     # given an amount of strings representing the basic units in the SI returns a Unit with them
-    def __init__(self, length=0, time=0, substanceAmount=0, electricCurrent=0, temperature=0, luminousIntensity=0, mass=0):
+    def __init__(self, length=0, time=0, substanceAmount=0, electricCurrent=0, temperature=0, luminousIntensity=0, mass=0, multiplier=1):
         self.__length = "m^"+str(length)
         self.__time = "s^"+str(time)
         self.__substanceAmount = "mol^"+str(substanceAmount)
@@ -13,6 +13,7 @@ class unit:
         self.__temperature = "K^"+str(temperature)
         self.__luminousIntensity = "cd^"+str(luminousIntensity)
         self.__mass = "kg^"+str(mass)
+        self.__multiplier = multiplier
 
     # getlength: none -> str
     # Returns the length units associated with the unit
@@ -49,9 +50,15 @@ class unit:
     def getmass(self):
         return self.__mass
 
-    # __add__: none -> Unit
+    # getmultiplier: none -> num
+    # Returns the multiplier for the unit,
+    # for basic SI units is 1 (except for kilogram), for multiples is a 10 power, while for non SI units can be any number
+    def getmultiplier(self):
+        return self.__multiplier
+
+    # __mul__: none -> Unit
     # does a multiplication between two units
-    def __add__(self,unidad):
+    def __mul__(self,unidad):
         largoAux1 = self.__length.split("^")
         largoAux2 = unidad.__length.split("^")
         largo1 = int(largoAux1[1])
@@ -87,8 +94,64 @@ class unit:
         masa1 = int(masaAux1[1])
         masa2 = int(masaAux2[1])
         masaNew = masa1+masa2
-        newUnit = unit(largoNew,tiempoNew,sustanciaNew,corrienteNew,temperaturaNew,luminosidadNew,masaNew)
+        multiplier1 = self.__multiplier
+        multiplier2 = unidad.__multiplier
+        multiplierNew = multiplier1 * multiplier2
+        newUnit = unit(largoNew,tiempoNew,sustanciaNew,corrienteNew,temperaturaNew,luminosidadNew,masaNew,multiplierNew)
         return newUnit
+
+    # __truediv__: none -> Unit
+    # does a divition between two units
+    def __truediv__(self, unidad):
+        largoAux1 = self.__length.split("^")
+        largoAux2 = unidad.__length.split("^")
+        largo1 = int(largoAux1[1])
+        largo2 = int(largoAux2[1])
+        largoNew = largo1 - largo2
+        tiempoAux1 = self.__time.split("^")
+        tiempoAux2 = unidad.__time.split("^")
+        tiempo1 = int(tiempoAux1[1])
+        tiempo2 = int(tiempoAux2[1])
+        tiempoNew = tiempo1 - tiempo2
+        sustanciaAux1 = self.__substanceAmount.split("^")
+        sustanciaAux2 = unidad.__substanceAmount.split("^")
+        sustancia1 = int(sustanciaAux1[1])
+        sustancia2 = int(sustanciaAux2[1])
+        sustanciaNew = sustancia1 - sustancia2
+        corrienteAux1 = self.__electricCurrent.split("^")
+        corrienteAux2 = unidad.__electricCurrent.split("^")
+        corriente1 = int(corrienteAux1[1])
+        corriente2 = int(corrienteAux2[1])
+        corrienteNew = corriente1 - corriente2
+        temperaturaAux1 = self.__temperature.split("^")
+        temperaturaAux2 = unidad.__temperature.split("^")
+        temperatura1 = int(temperaturaAux1[1])
+        temperatura2 = int(temperaturaAux2[1])
+        temperaturaNew = temperatura1 - temperatura2
+        luminosidadAux1 = self.__luminousIntensity.split("^")
+        luminosidadAux2 = unidad.__luminousIntensity.split("^")
+        luminosidad1 = int(luminosidadAux1[1])
+        luminosidad2 = int(luminosidadAux2[1])
+        luminosidadNew = luminosidad1 - luminosidad2
+        masaAux1 = self.__mass.split("^")
+        masaAux2 = unidad.__mass.split("^")
+        masa1 = int(masaAux1[1])
+        masa2 = int(masaAux2[1])
+        masaNew = masa1 - masa2
+        multiplier1 = self.__multiplier
+        multiplier2 = unidad.__multiplier
+        multiplierNew = multiplier1 / multiplier2
+        newUnit = unit(largoNew, tiempoNew, sustanciaNew, corrienteNew, temperaturaNew, luminosidadNew, masaNew, multiplierNew)
+        return newUnit
+
+    # __eq__: unit -> bool
+    # evaluates if two units are equal
+    def __eq__(self, other):
+        if not isinstance(other, unit):
+            return NotImplemented
+        return self.__length == other.__length and self.__time == other.__time and self.__substanceAmount == other.__substanceAmount and \
+        self.__electricCurrent == other.__electricCurrent and self.__temperature == other.__temperature and self.__luminousIntensity == other.__luminousIntensity and \
+        self.__mass == other.__mass and self.__multiplier == other.__multiplier
 
     # __ToVector: none -> list
     # transforms a unit into a vector
@@ -107,26 +170,29 @@ class unit:
         luminosidad = int(luminosidadAux[1])
         masaAux = self.__mass.split("^")
         masa = int(masaAux[1])
-        unidadVector = [largo,tiempo,sustancia,corriente,temperatura,luminosidad,masa]
+        multiplier = self.__multiplier
+        unidadVector = [largo,tiempo,sustancia,corriente,temperatura,luminosidad,masa, multiplier]
         return unidadVector
 
     # __ToString: none -> str
-    #def __ToString__(self):
-       # unidadVector = self.__ToVector__()
-       # unidadString =
-       # return
-    # una funcion que lo simplifique se necesita antes
+    # takes a unit and returns it in a readable form, if the unit is a SI unit returns it instead
+    def __str__(self):
+       for i in UnitDatabase:
+           if self == UnitDatabase[i]:
+               return UnitDatabase[i] # debe ser un str, arreglar
+           else:
+               return # terminar
 
 # known units
-# syntaxis: name = unit(length, time, substanceAmount, electricCurrent, temperature, luminousIntensity,mass)
-# syntaxis: name = unit(m, s, mole, A, K, cd, kg)
+# syntaxis: name = unit(length, time, substanceAmount, electricCurrent, temperature, luminousIntensity,mass, multiplier)
+# syntaxis: name = unit(m, s, mole, A, K, cd, kg, multiplier)
 Meter = unit(1,0,0,0,0,0,0)
 Second = unit(0,1,0,0,0,0,0)
 Mole = unit(0,0,1,0,0,0,0)
 Amper = unit(0,0,0,1,0,0,0)
 Kelvin = unit(0,0,0,0,1,0,0)
 Candela = unit(0,0,0,0,0,1,0)
-Kilogram = unit(0,0,0,0,0,0,1)
+Kilogram = unit(0,0,0,0,0,0,1,10^3)
 # Derived units:
 Newton = unit(1,-2,0,0,0,0,1)
 Coulomb = unit(0,1,0,1,0,0,0)
@@ -140,8 +206,11 @@ Weber = unit(2,-2,0,-1,0,0,1)
 Tesla = unit(0,-2,0,-1,0,0,1)
 Joule = unit(2,-2,0,0,0,0,1)
 Watt = unit(2,-3,0,0,0,0,1)
-Radian = unit(0,0,0,0,0,0,0)
-Steradian = unit(0,0,0,0,0,0,0)
+Radian = unit(0,0,0,0,0,0,0) # adimensional (m/m)
+Steradian = unit(0,0,0,0,0,0,0) # adimensional (m^2/m^2)
+# Pascal =
+# as a list:
+UnitDatabase =[Meter,Second,Mole,Amper,Kelvin,Kilogram,Newton,Coulomb,Hertz,Volt,Henry,Farad,Ohm,Siemens,Weber, Tesla,Joule,Watt]
 # To-do list:
 # funcion que permita ajustar magnitud: kg a gr etc
 # funcion q convierta a string, simplifique unidades conocidas
