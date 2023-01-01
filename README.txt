@@ -1,3 +1,3 @@
 # DimentionalAnalysis
-# calculadora de análisis dimensional, convierte unidades del sistema internacional a unidades más simples o a expresiones conocidas
-# tambien permite conversion a diferentes magnitudes o diferentes sistemas
+# calculadora de análisis dimensional, convierte unidades del sistema internacional (SI) o expresiones entre unidades a unidades más simples o expresiones conocidas.
+# tambien permite conversión a diferentes magnitudes o diferentes sistemas (proximamente)
