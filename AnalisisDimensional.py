@@ -177,11 +177,40 @@ class unit:
     # __ToString: none -> str
     # takes a unit and returns it in a readable form, if the unit is a SI unit returns it instead
     def __str__(self):
-       for i in UnitDatabase:
-           if self == UnitDatabase[i]:
-               return UnitDatabase[i] # debe ser un str, arreglar
-           else:
-               return # terminar
+        resultado = ""
+        largoAux1 = self.__length.split("^")
+        largo1 = int(largoAux1[1])
+        tiempoAux1 = self.__time.split("^")
+        tiempo1 = int(tiempoAux1[1])
+        sustanciaAux1 = self.__substanceAmount.split("^")
+        sustancia1 = int(sustanciaAux1[1])
+        corrienteAux1 = self.__electricCurrent.split("^")
+        corriente1 = int(corrienteAux1[1])
+        temperaturaAux1 = self.__temperature.split("^")
+        temperatura1 = int(temperaturaAux1[1])
+        luminosidadAux1 = self.__luminousIntensity.split("^")
+        luminosidad1 = int(luminosidadAux1[1])
+        masaAux1 = self.__mass.split("^")
+        masa1 = int(masaAux1[1])
+        if self.__multiplier != 1:
+            resultado += str(self.__multiplier)+"("
+        if largo1 != 0:
+            resultado += self.__length+" "
+        if tiempo1 != 0:
+            resultado += self.__time+" "
+        if sustancia1 != 0:
+            resultado += self.__substanceAmount+" "
+        if corriente1 != 0:
+            resultado += self.__electricCurrent+" "
+        if temperatura1 != 0:
+            resultado += self.__temperature+" "
+        if luminosidad1 != 0:
+            resultado += self.__luminousIntensity+" "
+        if masa1 != 0:
+            resultado += self.__mass
+        if self.__multiplier != 1:
+            resultado += ")"
+        return resultado
 
 # known units
 # syntaxis: name = unit(length, time, substanceAmount, electricCurrent, temperature, luminousIntensity,mass, multiplier)
@@ -192,7 +221,7 @@ Mole = unit(0,0,1,0,0,0,0)
 Amper = unit(0,0,0,1,0,0,0)
 Kelvin = unit(0,0,0,0,1,0,0)
 Candela = unit(0,0,0,0,0,1,0)
-Kilogram = unit(0,0,0,0,0,0,1,10^3)
+Kilogram = unit(0,0,0,0,0,0,1,10**3)
 # Derived units:
 Newton = unit(1,-2,0,0,0,0,1)
 Coulomb = unit(0,1,0,1,0,0,0)
@@ -213,6 +242,10 @@ Steradian = unit(0,0,0,0,0,0,0) # adimensional (m^2/m^2)
 UnitDatabase =[Meter,Second,Mole,Amper,Kelvin,Kilogram,Newton,Coulomb,Hertz,Volt,Henry,Farad,Ohm,Siemens,Weber, Tesla,Joule,Watt]
 # To-do list:
 # funcion que permita ajustar magnitud: kg a gr etc
-# funcion q convierta a string, simplifique unidades conocidas
+# funcion q simplifique unidades conocidas:
+#                  for i in range(len(UnitDatabase)):
+#            if self == 2: #self == UnitDatabase[i]:
+#                return UnitDatabase[i] # debe ser un str, arreglar (hacer caso a caso)
+#            else:
 # ver que hacer con las unidades que tienen las misma unidades basicas
 # añadir mas derivatives
